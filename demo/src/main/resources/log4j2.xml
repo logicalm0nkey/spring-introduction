@@ -27,14 +27,14 @@
             </PatternLayout>
             <Policies>
                 <!-- 1 kb で rollover -->
-                <SizeBasedTriggeringPolicy size="1 kb" />
+                <SizeBasedTriggeringPolicy size="100 kb" />
             </Policies>
             <!-- ローテーションファイルは3つまで持つ -->
-            <DefaultRolloverStrategy max="3" />
+            <DefaultRolloverStrategy max="5" />
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Root level="trace">
+        <Root level="info">
             <AppenderRef ref="Console" />
             <AppenderRef ref="LogFile" />
         </Root>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE project>
+<Configuration status="off">
+    <Properties>
+        <!-- 変数の定義。ここではフォーマットを定義している。フォーマットの書き方は 
+            https://logging.apache.org/log4j/2.x/manual/layouts.html#PatternLayout -->
+        <Property name="format1">[%d] %-5p [%t]: %m%n</Property>
+        <!-- ログのファイル名 -->
+        <Property name="logfile">./log/test.log</Property>
+        <Property name="archived-logfile">./log/test_%d{yyyy-MM-dd}-%i.log</Property>
+    </Properties>
+    <Appenders>
+        <!-- コンソール出力に関する設定 -->
+        <!-- デフォルトでは target="SYSTEM_OUT" -->
+        <Console name="Console">
+            <PatternLayout>
+                <pattern>${format1}</pattern>
+            </PatternLayout>
+        </Console>
+        <!-- ログファイルに関する設定。 -->
+        <!-- デフォルトでは追記される (append="true") 。 -->
+        <!-- デフォルトではバッファに貯めこんでから I/O する。 (bufferedIO="true") -->
+        <!-- fileName でパスを含めたファイル名を指定する。ファイル、または親ディレクトリが存在しない時は作成してくれる。 -->
+        <RollingFile name="LogFile" fileName="${logfile}" filePattern="${archived-logfile}">
+            <PatternLayout>
+                <pattern>${format1}</pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- 1 kb で rollover -->
+                <SizeBasedTriggeringPolicy size="1 kb" />
+            </Policies>
+            <!-- ローテーションファイルは3つまで持つ -->
+            <DefaultRolloverStrategy max="3" />
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="LogFile" />
+        </Root>
+    </Loggers>
+</Configuration>

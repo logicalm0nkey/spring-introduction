@@ -15,13 +15,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+// リクエストヘッダなどを詳細に設定したい場合は org.springframework.http.RequestEntity を使うといいらしい。
+//import org.springframework.http.RequestEntity;
+// レスポンスヘッダなどを詳細に設定したい場合は org.springframework.http.ResponseEntity を使うといいらしい。
 import org.springframework.http.ResponseEntity;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.commons.text.StringEscapeUtils;
 
 /**
  * API 用コントローラ
@@ -143,13 +148,14 @@ public class WebApiController {
      */
     // @ExceptionHandler
     // private ResponseEntity<ErrorResponse> onError(Exception ex) {
-    //     logger.error(ex.getMessage() + "on console", ex);
+    // logger.error(ex.getMessage() + "on console", ex);
 
-    //     HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+    // HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
-    //     ErrorResponse response = new ErrorResponse("例外発生", ex.getMessage(), status.value());
+    // ErrorResponse response = new ErrorResponse("例外発生", ex.getMessage(),
+    // status.value());
 
-    //     return new ResponseEntity<ErrorResponse>(response, status);
+    // return new ResponseEntity<ErrorResponse>(response, status);
     // }
 
     /**
@@ -161,5 +167,36 @@ public class WebApiController {
     @GetMapping("test/ex")
     private String testException() throws Exception {
         throw new RuntimeException("this is error.");
+    }
+
+    /**
+     * 外部 API を叩いてみるお試し end pt.
+     * 
+     * @return 郵便番号 api の response json
+     */
+    @GetMapping(value = "zip", produces = MediaType.APPLICATION_JSON_VALUE)
+    private String zip() {
+        RestTemplate template = new RestTemplate();
+
+        // 東京らしい
+        final String zipCode = "2140001";
+        final String endpoint = "https://zipcloud.ibsnet.co.jp/api/search";
+        final String url = endpoint + "?zipcode=" + zipCode;
+
+        ResponseEntity<String> entity = template.getForEntity(url, String.class);
+        String json = entity.getBody();
+
+        return decodeUnicodeEscape(json);
+    }
+
+    /**
+     * decode unicode escape.
+     * 
+     * @param val
+     * @return
+     */
+    private static String decodeUnicodeEscape(String val) {
+        // Unicode escape を decode するなら org.apache.commons.text.StringEscapeUtils
+        return StringEscapeUtils.unescapeJava(val);
     }
 }

@@ -66,6 +66,7 @@ public class WebApiController {
      */
     @GetMapping("num/{num}")
     private String testPathVariable2(@PathVariable Integer num) {
+        // String 型以外は、 InitBinder を使わないでも勝手に trim される
         return "受け取ったパラメータ (Integer): " + num;
     }
 

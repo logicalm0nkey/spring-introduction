@@ -1,13 +1,11 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.ErrorResponse;
 import com.example.demo.model.Human;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,14 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 // リクエストヘッダなどを詳細に設定したい場合は org.springframework.http.RequestEntity を使うといいらしい。
 //import org.springframework.http.RequestEntity;
 // レスポンスヘッダなどを詳細に設定したい場合は org.springframework.http.ResponseEntity を使うといいらしい。
 import org.springframework.http.ResponseEntity;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 import org.apache.commons.text.StringEscapeUtils;
 
 /**
@@ -34,7 +29,6 @@ import org.apache.commons.text.StringEscapeUtils;
 @RestController
 @RequestMapping("api")
 public class WebApiController {
-    private final Logger logger = LogManager.getLogger();
 
     /**
      * シンプルな end pt.

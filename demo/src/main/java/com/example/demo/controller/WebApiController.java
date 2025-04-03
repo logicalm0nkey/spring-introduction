@@ -46,7 +46,7 @@ public class WebApiController {
      * @return 出力文字列
      */
     @GetMapping("hello")
-    private String hello() {
+    public String hello() {
         return "SpringBoot!";
     }
 
@@ -58,7 +58,7 @@ public class WebApiController {
      * @return
      */
     @GetMapping("test/{param}")
-    private String testPathVariable(@PathVariable String param) {
+    public String testPathVariable(@PathVariable String param) {
         return "受け取ったパラメータ (String): " + param;
     }
 
@@ -69,7 +69,7 @@ public class WebApiController {
      * @return
      */
     @GetMapping("num/{num}")
-    private String testPathVariable2(@PathVariable Integer num) {
+    public String testPathVariable2(@PathVariable Integer num) {
         // String 型以外は、 InitBinder を使わないでも勝手に trim される
         return "受け取ったパラメータ (Integer): " + num;
     }
@@ -82,7 +82,7 @@ public class WebApiController {
      * @return
      */
     @GetMapping("test")
-    private String testRequestParam(@RequestParam String param) {
+    public String testRequestParam(@RequestParam String param) {
         return "受け取ったパラメータ (String): " + param;
     }
 
@@ -93,7 +93,7 @@ public class WebApiController {
      * @return
      */
     @GetMapping("num")
-    private String testRequestParam2(@RequestParam Double num) {
+    public String testRequestParam2(@RequestParam Double num) {
         return "受け取ったパラメータ (Double): " + num;
     }
 
@@ -104,7 +104,7 @@ public class WebApiController {
      * @return
      */
     @PostMapping("test")
-    private String testRequestBody(@RequestBody String param) {
+    public String testRequestBody(@RequestBody String param) {
         return "受け取ったボディ (String): " + param;
     }
 
@@ -115,7 +115,7 @@ public class WebApiController {
      * @return モデルの JSON データ。
      */
     @GetMapping("human/{name}")
-    private Human getHuman(@PathVariable String name) {
+    public Human getHuman(@PathVariable String name) {
         return service.searchHumanByName(name);
     }
 
@@ -126,7 +126,7 @@ public class WebApiController {
      * @return Map オブジェクト
      */
     @GetMapping("mapping")
-    private Map<String, Object> map() {
+    public Map<String, Object> map() {
         Map<String, Object> map = new HashMap<>();
         map.put("hoge", "neko");
         map.put("fuga", 99.23);
@@ -141,7 +141,7 @@ public class WebApiController {
      * @return
      */
     @GetMapping(value = "img", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    private Resource img() {
+    public Resource img() {
         return new FileSystemResource(new File("demo\\src\\main\\resources\\img\\アイコン.png"));
     }
 
@@ -171,7 +171,7 @@ public class WebApiController {
      * @throws Exception
      */
     @GetMapping("test/ex")
-    private String testException() throws Exception {
+    public String testException() throws Exception {
         throw new RuntimeException("this is error.");
     }
 
@@ -181,7 +181,7 @@ public class WebApiController {
      * @return 郵便番号 api の response json
      */
     @GetMapping(value = "zip", produces = MediaType.APPLICATION_JSON_VALUE)
-    private String zip() {
+    public String zip() {
         RestTemplate template = new RestTemplate();
 
         // 東京らしい
@@ -218,4 +218,6 @@ public class WebApiController {
 
         return map1;
     }
+
+    
 }

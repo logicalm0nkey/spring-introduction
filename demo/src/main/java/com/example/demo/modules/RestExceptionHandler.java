@@ -27,7 +27,7 @@ public class RestExceptionHandler {
      * @return
      */
     @ExceptionHandler
-    private ResponseEntity<ErrorResponse> onError(Exception ex) {
+    public ResponseEntity<ErrorResponse> onError(Exception ex) {
         logger.error(ex.getMessage() + "on console", ex);
 
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;

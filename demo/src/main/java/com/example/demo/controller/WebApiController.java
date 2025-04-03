@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Human;
+import com.example.demo.service.WebApiService;
 
 import java.io.File;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -29,6 +31,12 @@ import org.apache.commons.text.StringEscapeUtils;
 @RestController
 @RequestMapping("api")
 public class WebApiController {
+    private final WebApiService service;
+
+    @Autowired
+    public WebApiController(WebApiService service) {
+        this.service = service;
+    }
 
     /**
      * シンプルな end pt.
@@ -100,12 +108,13 @@ public class WebApiController {
 
     /**
      * モデルの JSON データを返す end pt.
+     * 名前検索、見たいな感じ？
      * 
      * @return モデルの JSON データ。
      */
-    @GetMapping("human")
-    private Human getHuman() {
-        return new Human("hoge", Integer.valueOf(20));
+    @GetMapping("human/{name}")
+    private Human getHuman(@PathVariable String name) {
+        return service.searchHumanByName(name);
     }
 
     /**

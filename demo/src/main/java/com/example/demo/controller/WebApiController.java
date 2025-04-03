@@ -218,6 +218,4 @@ public class WebApiController {
 
         return map1;
     }
-
-    
 }

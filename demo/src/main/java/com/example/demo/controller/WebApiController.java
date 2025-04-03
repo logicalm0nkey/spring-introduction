@@ -4,6 +4,8 @@ import com.example.demo.model.Human;
 import com.example.demo.service.WebApiService;
 
 import java.io.File;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -202,5 +204,18 @@ public class WebApiController {
     private static String decodeUnicodeEscape(String val) {
         // Unicode escape を decode するなら org.apache.commons.text.StringEscapeUtils
         return StringEscapeUtils.unescapeJava(val);
+    }
+
+    @GetMapping("string/{str}")
+    public Map<String, String> getLength(@PathVariable String str) {
+        Map<String, String> map1 = new HashMap<>();
+        map1.put("正規化前の length, codePointCount",
+                str.length() + " " + str.codePointCount(0, str.length()));
+
+        String normalizedStr = Normalizer.normalize(str, Form.NFC);
+        map1.put("正規化後の length, codePointCount",
+                normalizedStr.length() + " " + normalizedStr.codePointCount(0, normalizedStr.length()));
+
+        return map1;
     }
 }
